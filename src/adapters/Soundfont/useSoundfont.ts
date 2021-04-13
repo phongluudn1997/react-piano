@@ -25,13 +25,16 @@ export function useSoundfont({ AudioContext }: Settings): Adapted {
 
   const audio = React.useRef(new AudioContext());
 
-  async function load(instrument: InstrumentName = DEFAULT_INSTRUMENT) {
+  const load = React.useCallback(async function (
+    instrument: InstrumentName = DEFAULT_INSTRUMENT
+  ) {
     setLoading(true);
     const player = await Soundfont.instrument(audio.current, instrument);
     setLoading(false);
     setCurrent(instrument);
     setPlayer(player);
-  }
+  },
+  []);
 
   async function play(note: MidiValue) {
     await resume();
